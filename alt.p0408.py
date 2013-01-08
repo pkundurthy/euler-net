@@ -19,7 +19,7 @@ def checkSq(x,y):
 		#print x, y, x+y
 		isSQ = True
 	else:
-		pass
+		isSQ = False
 	return isSQ
 
 for nlev in range(levels):
@@ -71,4 +71,3 @@ print llist[0]%1000000007
 
 
 
-	
