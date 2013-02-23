@@ -1,85 +1,59 @@
 
-def isPrime(number):
+
+def isPrime(num):
 
 	Out = True
-	if number%2 == 0:
+	if num <= 1:
 		Out = False
-	elif number < 0:
-		Out = False
-	elif number == 1:
+	elif num == 2:
+		Out = True
+	elif num % 2 == 0:
 		Out = False
 	else:
-		fac = 3
-		while fac <= number/2:
-			if number%fac == 0:
+		s = 3
+		while s*s <= num:
+			if num%s == 0:
 				Out = False
 				break
 			else:
-				fac += 2
-			
+				s += 2
+
 	return Out
 
 
-Side = 1
+Side = 3
 perc = 100.0
-CountUp = 1
-x, y = 0, 0
-dM = 0, 0
-
 
 DPrime = []
 DnonPrime = [1]
 
+NPrime = 0
+Nnon = 1
+lastPrime = None
 while True:
 	BRSq = (Side)**2
 	Sub1 = (Side) - 1
 	BLSq = BRSq - Sub1
 	TLSq = BRSq - 2*Sub1
 	TRSq = BRSq - 3*Sub1
-	SideStep = BRSq + 1
-	
-	if CountUp == SideStep:
-		dM = (0,1)
-		Side += 2
-	elif CountUp == TRSq:
-		dM = (-1,0)
-	elif CountUp == TLSq:
-		dM = (0,-1)
-	elif CountUp == BLSq:
-		dM = (1,0)
-	else:
-		pass
 
-	#print CountUp, x, y, Side, dM, (BRSq,TRSq,TLSq,BLSq,SideStep)
-
-	if x == y or -1*x == y:
-		Corner = True
-		if isPrime(CountUp):
-			DPrime.append(CountUp)
+	for el in [BLSq,TRSq,TLSq]:
+		if isPrime(el):
+			NPrime += 1
+			lastPrime = el
 		else:
-			DnonPrime.append(CountUp)
-	else:
-		Corner = False
+			Nnon += 1
+	Nnon += 1
 
-	lenPr = len(DPrime)
-	lenNon = len(DnonPrime)
-	lenTot = lenPr + lenNon
-	perc = 100.*(lenPr)/(lenTot)
-	if Corner: 
-		print format(perc,'.2f'), Side, lenPr, lenTot
-		#print DPrime
-		#print DnonPrime
-		pass
+	lenTot = NPrime + Nnon
+	perc = 100.*(NPrime)/(lenTot)
+	print format(perc,'.2f'), Side, NPrime, lenTot, lastPrime
+	#print DPrime
+	#print DnonPrime
 
-	if CountUp != 1:
-		x = x+dM[0]
-		y = y+dM[1]
-	else:
-		x += 1
-	CountUp += 1
-
-	#print perc, lenPr, lenTot, Sid
-
+	Side += 2
 	if Side > 7 and perc < 10.0:
 		break
+
+print Side
 
