@@ -1,4 +1,5 @@
 import numpy as np
+import itertools as it
 
 def sumDigSq(num):
 
@@ -6,34 +7,59 @@ def sumDigSq(num):
 	sumSq = np.sum( [x**2 for x in map(int, numStr)] )
 	return sumSq
 
-Count89 = 0
-MaxL = 1001
-MaxL = 10000001
-x = 1
-while x < MaxL:
-	k = x
-	Cycle = 0
-	while k not in [1,89]:
-		k = sumDigSq(k)
-		Cycle += 1
+def isSad(num):
+	
+	Out = False
+	while True:
+		num = sumDigSq(num)
+		if num == 89:
+			Out = True
+			break
+		elif num == 1:
+			break
+	return Out
 
-	if k == 89:
-		print x, Cycle
-		Count89 += 1
+def mkSadList(num):
 
-	x += 1
+	Dict = {}
+	x = 1
+	while x < num+1:
+		if x == 1:
+			Dict[x] = False
+			x += 1
+		elif x == 89:
+			Dict[x] = True
+			x += 1
+		else:
+			k = x
+			while True:
+				if k == 1:
+					Dict[x] = False
+					x += 1
+					break
+				elif k == 89:
+					Dict[x] = True
+					x += 1
+					break
+				else:
+					k = sumDigSq(k)
+	
+	return Dict
+			
+Lim = 10000000
+#Lim = 1000
+maxSumSq = sumDigSq(Lim-1)
+SadDict = mkSadList(maxSumSq)
 
-print Count89
-"""
-for x in xrange(1,MaxL,1):
-	k = x
-	while k not in [1,89]:
-		k = sumDigSq(k)
+CountSad = 0
+d = 1
+while d < Lim:
+	sqS = sumDigSq(d)
+	if SadDict[sqS]:
+		CountSad += 1
+	print d, CountSad
+	d += 1
 
-	if k == 89:
-		print x
-		Count89 += 1
+print CountSad
+		
 
-
-
-"""
